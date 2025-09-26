@@ -1,0 +1,92 @@
+# Example NeMo Agent Toolkit configuration for Milvus MCP integration
+# Replace YOUR_NVIDIA_API_KEY with your actual NVIDIA API key
+
+functions:
+  # Milvus MCP Tools
+  milvus_list_collections:
+    _type: mcp_tool_wrapper
+    url: "http://localhost:9902/sse"
+    transport: "sse"
+    mcp_tool_name: "milvus_list_collections"
+
+  milvus_get_collection_info:
+    _type: mcp_tool_wrapper
+    url: "http://localhost:9902/sse"
+    transport: "sse"
+    mcp_tool_name: "milvus_get_collection_info"
+
+  milvus_query:
+    _type: mcp_tool_wrapper
+    url: "http://localhost:9902/sse"
+    transport: "sse"
+    mcp_tool_name: "milvus_query"
+
+  milvus_text_search:
+    _type: mcp_tool_wrapper
+    url: "http://localhost:9902/sse"
+    transport: "sse"
+    mcp_tool_name: "milvus_text_search"
+
+  milvus_load_collection:
+    _type: mcp_tool_wrapper
+    url: "http://localhost:9902/sse"
+    transport: "sse"
+    mcp_tool_name: "milvus_load_collection"
+
+  milvus_release_collection:
+    _type: mcp_tool_wrapper
+    url: "http://localhost:9902/sse"
+    transport: "sse"
+    mcp_tool_name: "milvus_release_collection"
+
+  milvus_insert_data:
+    _type: mcp_tool_wrapper
+    url: "http://localhost:9902/sse"
+    transport: "sse"
+    mcp_tool_name: "milvus_insert_data"
+
+  milvus_create_collection:
+    _type: mcp_tool_wrapper
+    url: "http://localhost:9902/sse"
+    transport: "sse"
+    mcp_tool_name: "milvus_create_collection"
+
+  # Natural language query wrapper
+  warehouse_query:
+    _type: mcp_tool_wrapper
+    url: "http://localhost:9902/sse"
+    transport: "sse"
+    mcp_tool_name: "warehouse_query"
+
+llms:
+  nvidia_llama:
+    _type: nim
+    model_name: meta/llama-3.1-70b-instruct
+    max_tokens: 2000
+    temperature: 0.1
+    system_prompt: |
+      You are an intelligent assistant with access to a Milvus vector database.
+
+      When users ask about databases or collections, use the appropriate Milvus tools:
+      - Use milvus_list_collections to show available collections
+      - Use milvus_query to retrieve specific data with filters
+      - Use warehouse_query for natural language queries about inventory
+
+      Always be helpful and provide clear, formatted responses.
+
+workflow:
+  _type: react_agent
+  tool_names:
+    - warehouse_query
+    - milvus_list_collections
+    - milvus_get_collection_info
+    - milvus_query
+    - milvus_text_search
+    - milvus_load_collection
+    - milvus_release_collection
+    - milvus_insert_data
+    - milvus_create_collection
+  llm_name: nvidia_llama
+  verbose: true
+  parse_agent_response_max_retries: 5
+  max_tool_calls: 20
