@@ -1,8 +1,8 @@
-# NeMo Agent Toolkit configuration for Milvus MCP integration
-# Pure Milvus vector database demo
+# NeMo Agent Toolkit configuration for Milvus MCP Server
+# Pure Milvus vector database integration demo
 
 functions:
-  # Natural language query wrapper
+  # Natural language warehouse query wrapper
   warehouse_query:
     _type: mcp_tool_wrapper
     url: "http://localhost:9902/sse"
@@ -90,14 +90,19 @@ llms:
       2. Vector Search - Find similar items using embeddings
       3. Natural Language Queries - Understand and execute warehouse inventory queries
 
-      When users ask about databases or collections, use the appropriate Milvus tools:
-      - Use milvus_list_collections to show available collections
-      - Use milvus_query to retrieve specific data with filters
-      - Use warehouse_query for natural language queries about inventory
-      - Use milvus_vector_search for similarity searches
-      - Use milvus_text_search for text-based searches
+      WAREHOUSE CONTEXT:
+      - The main collection is "warehouse_inventory" with product data
+      - Fields include: item_name, category, sku, description, unit_price, stock_quantity, supplier, status
+      - Use warehouse_query for natural language queries like "show me all electronics"
+      - Use milvus tools for direct database operations
 
-      Always be helpful and provide clear, formatted responses.
+      QUERY EXAMPLES:
+      - "What databases do we have?" → milvus_list_collections
+      - "Show me all electronics" → warehouse_query with natural language
+      - "Find items with low stock" → warehouse_query or milvus_query
+      - "Get collection schema" → milvus_get_collection_info
+
+      Always provide clear, formatted responses and use the appropriate tool for each task.
 
 workflow:
   _type: react_agent
